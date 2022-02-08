@@ -1,0 +1,21 @@
+version: "3"
+
+dotenv: [".env"]
+
+tasks:
+  temp-build:
+    cmds:
+      - go build -v -o /tmp/do-billing-per-project cmd/do-billing-per-project/*
+
+  start:
+    cmds:
+      - task: temp-build
+      - /tmp/do-billing-per-project {{.CLI_ARGS}}
+
+  docker-build:
+    cmds:
+      - docker build . -t jmacazana/do-billing-per-project
+
+  docker-deploy:
+    cmds:
+      - docker push jmacazana/do-billing-per-project
